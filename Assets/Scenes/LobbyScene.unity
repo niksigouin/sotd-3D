@@ -1852,6 +1852,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c684a7f9d6551e46a1708c6f19c9420, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectionStatusText: {fileID: 38442580}
+  Login_UI_Panel: {fileID: 1898342735}
+  playerNameInput: {fileID: 237746957}
+  GameOptions_UI_Panel: {fileID: 1897633495}
+  CreateRoom_UI_Panel: {fileID: 274552716}
+  InsideRoom_UI_Panel: {fileID: 1760134789}
+  RoomList_UI_Panel: {fileID: 2010485768}
+  JoinRandomRoom_UI_Panel: {fileID: 1438516555}
 --- !u!4 &683786298
 Transform:
   m_ObjectHideFlags: 0
@@ -2057,10 +2065,10 @@ RectTransform:
   m_Father: {fileID: 1897633496}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 367, y: -445}
-  m_SizeDelta: {x: 600, y: 130}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &744291591
 MonoBehaviour:
@@ -2769,7 +2777,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 683786297}
         m_MethodName: OnLoginButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -3683,10 +3691,10 @@ RectTransform:
   m_Father: {fileID: 1897633496}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 367, y: -625}
-  m_SizeDelta: {x: 600, y: 130}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1425780401
 MonoBehaviour:
@@ -4263,10 +4271,10 @@ RectTransform:
   m_Father: {fileID: 1897633496}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 367, y: -265}
-  m_SizeDelta: {x: 600, y: 130}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1632187818
 MonoBehaviour:
@@ -4331,8 +4339,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActivePanel
+      - m_Target: {fileID: 683786297}
+        m_MethodName: ActivatePanel
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4653,7 +4661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1897633496
 RectTransform:
   m_ObjectHideFlags: 0
