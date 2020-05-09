@@ -88,6 +88,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         ActivatePanel(GameOptions_UI_Panel.name);
     }
 
+    public void OnShowRoomListButtonClicked()
+    {
+        if (!PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.JoinLobby();
+        }
+
+        ActivatePanel(RoomList_UI_Panel.name);
+
+    }
+
     #endregion
 
     #region Photon Callbacks
@@ -111,6 +122,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         Debug.Log(PhotonNetwork.LocalPlayer.NickName + " joined " + PhotonNetwork.CurrentRoom.Name);
         ActivatePanel(InsideRoom_UI_Panel.name);
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        foreach (RoomInfo room in roomList)
+        {
+            Debug.Log(room.Name);
+        }
     }
 
     #endregion
