@@ -165,7 +165,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         foreach (RoomInfo room in cachedRoomList.Values)
         {
             GameObject roomListEntryGameObject = Instantiate(roomListEntryPrefab);
-            roomListEntryGameObject.transform.SetParent(roomListEntryGameObject.transform);
+            roomListEntryGameObject.transform.SetParent(roomListParentGameObject.transform);
             roomListEntryGameObject.transform.localScale = Vector3.one;
 
             roomListEntryGameObject.transform.Find("RoomNameText").GetComponent<Text>().text = room.Name;
