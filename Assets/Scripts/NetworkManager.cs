@@ -29,9 +29,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Room List UI Panel")]
     public GameObject RoomList_UI_Panel;
+    public GameObject roomListEntryPrefab;
+    public GameObject roomListParentGameObject;
 
     [Header("Join Random Room UI Panel")]
     public GameObject JoinRandomRoom_UI_Panel;
+
+    private Dictionary<string, RoomInfo> cachedRoomList;
+    private Dictionary<string, GameObject> roomListGameObjects;
 
     #region Unity Methods
 
@@ -39,6 +44,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     void Start()
     {
         ActivatePanel(Login_UI_Panel.name);
+
+        cachedRoomList = new Dictionary<string, RoomInfo>();
+        roomListGameObjects = new Dictionary<string, GameObject>();
     }
 
     // Update is called once per frame
@@ -126,9 +134,45 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        ClearRoomListView();
+
         foreach (RoomInfo room in roomList)
         {
             Debug.Log(room.Name);
+            // If room is not open or is not visible or its been removed from the room list, remove it from the cached list
+            if (!room.IsOpen || !room.IsVisible || room.RemovedFromList)
+            {
+                if (cachedRoomList.ContainsKey(room.Name))
+                {
+                    cachedRoomList.Remove(room.Name);
+                }
+            }
+            else
+            {
+                // Update cached room list
+                if (cachedRoomList.ContainsKey(room.Name))
+                {
+                    cachedRoomList[room.Name] = room;
+                }
+                // Add new room to cached room list
+                else
+                {
+                    cachedRoomList.Add(room.Name, room);
+                }
+            }
+        }
+
+        foreach (RoomInfo room in cachedRoomList.Values)
+        {
+            GameObject roomListEntryGameObject = Instantiate(roomListEntryPrefab);
+            roomListEntryGameObject.transform.SetParent(roomListEntryGameObject.transform);
+            roomListEntryGameObject.transform.localScale = Vector3.one;
+
+            roomListEntryGameObject.transform.Find("RoomNameText").GetComponent<Text>().text = room.Name;
+            roomListEntryGameObject.transform.Find("RoomPlayersText").GetComponent<Text>().text = room.PlayerCount + " / " + room.MaxPlayers;
+            roomListEntryGameObject.transform.Find("JoinRoomButton").GetComponent<Button>().onClick.AddListener(() => OnJoinRoomButtonClicked(room.Name));
+
+            roomListGameObjects.Add(room.Name, roomListEntryGameObject);
         }
     }
 
@@ -143,10 +187,30 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         InsideRoom_UI_Panel.SetActive(panelToBeActivated.Equals(InsideRoom_UI_Panel.name));
         RoomList_UI_Panel.SetActive(panelToBeActivated.Equals(RoomList_UI_Panel.name));
         JoinRandomRoom_UI_Panel.SetActive(panelToBeActivated.Equals(JoinRandomRoom_UI_Panel.name));
-
-
     }
 
 
+    #endregion
+
+    #region Private Methods
+    void OnJoinRoomButtonClicked(string _roomName)
+    {
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
+
+        PhotonNetwork.JoinRoom(_roomName);
+    }
+
+    void ClearRoomListView()
+    {
+        foreach (var roomListGameObject in roomListGameObjects.Values)
+        {
+            Destroy(roomListGameObject);
+        }
+
+        roomListGameObjects.Clear();
+    }
     #endregion
 }
