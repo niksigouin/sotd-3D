@@ -1775,8 +1775,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: OnBackButtonClicked
+      - m_Target: {fileID: 683786297}
+        m_MethodName: OnCancelButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1857,6 +1857,8 @@ MonoBehaviour:
   playerNameInput: {fileID: 237746957}
   GameOptions_UI_Panel: {fileID: 1897633495}
   CreateRoom_UI_Panel: {fileID: 274552716}
+  roomNameInputField: {fileID: 460123711}
+  roomMaxPlayersInputField: {fileID: 217544445}
   InsideRoom_UI_Panel: {fileID: 1760134789}
   RoomList_UI_Panel: {fileID: 2010485768}
   JoinRandomRoom_UI_Panel: {fileID: 1438516555}
@@ -3348,7 +3350,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 683786297}
         m_MethodName: OnCreateRoomButtonClicked
         m_Mode: 1
         m_Arguments:

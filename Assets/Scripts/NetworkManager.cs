@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -20,6 +21,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Create Room UI Panel")]
     public GameObject CreateRoom_UI_Panel;
+    public InputField roomNameInputField; // Room name Input (Change to TMPro?)
+    public InputField roomMaxPlayersInputField;
 
     [Header("Inside Room UI Panel")]
     public GameObject InsideRoom_UI_Panel;
@@ -63,6 +66,28 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void OnCreateRoomButtonClicked()
+    {
+        string roomName = roomNameInputField.text;
+
+        if (string.IsNullOrEmpty(roomName))
+        {
+            roomName = "Room " + Random.Range(100, 1000);
+
+
+        }
+
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = (byte) int.Parse(roomMaxPlayersInputField.text);
+
+        PhotonNetwork.CreateRoom(roomName, roomOptions);
+    }
+
+    public void OnCancelButtonClicked()
+    {
+        ActivatePanel(GameOptions_UI_Panel.name);
+    }
+
     #endregion
 
     #region Photon Callbacks
@@ -77,6 +102,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         ActivatePanel(GameOptions_UI_Panel.name);
     }
 
+    public override void OnCreatedRoom()
+    {
+        Debug.Log(PhotonNetwork.CurrentRoom.Name + " is created");
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log(PhotonNetwork.LocalPlayer.NickName + " joined " + PhotonNetwork.CurrentRoom.Name);
+        ActivatePanel(InsideRoom_UI_Panel.name);
+    }
 
     #endregion
 
