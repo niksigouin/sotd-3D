@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -12,7 +13,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Login UI Panel")]
     public GameObject Login_UI_Panel;
-    public InputField playerNameInput; // Player name Input (Change to TMPro?)
+    public InputField playerNameInput_old; // Player name Input (Change to TMPro?)
+    public TMP_InputField playerNameInput;
     
 
     // PANELS
