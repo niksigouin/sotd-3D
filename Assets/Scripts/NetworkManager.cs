@@ -9,12 +9,12 @@ using TMPro;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     [Header("Connection Status")]
-    public Text connectionStatusText_OLD;
+    //public Text connectionStatusText_OLD;
     public TextMeshProUGUI connectionStatusText;
 
     [Header("Login UI Panel")]
     public GameObject Login_UI_Panel;
-    public InputField playerNameInput_old; // Player name Input (Change to TMPro?)
+    //public InputField playerNameInput_old; // Player name Input (Change to TMPro?)
     public TMP_InputField playerNameInput;
     
 
@@ -42,6 +42,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Join Random Room UI Panel")]
     public GameObject JoinRandomRoom_UI_Panel;
+
+    [Header("Settings UI Panel")]
+    public GameObject Settings_UI_Panel;
 
     private Dictionary<string, RoomInfo> cachedRoomList;
     private Dictionary<string, GameObject> roomListGameObjects;
@@ -149,6 +152,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         
     }
 
+    public void OnSettingsButtonClicked()
+    {
+        ActivatePanel(Settings_UI_Panel.name);
+    }
+
+    public void OnSettingsBackButtonClicked()
+    {
+        ActivatePanel(Login_UI_Panel.name);
+    }
+
+    public void OnQuitButtonClicked()
+    {
+        Application.Quit();
+    }
+
     #endregion
 
     #region Photon Callbacks
@@ -248,7 +266,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
     }
 
-
     public override void OnLeftRoom()
     {
         ActivatePanel(GameOptions_UI_Panel.name);
@@ -335,6 +352,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         InsideRoom_UI_Panel.SetActive(panelToBeActivated.Equals(InsideRoom_UI_Panel.name));
         RoomList_UI_Panel.SetActive(panelToBeActivated.Equals(RoomList_UI_Panel.name));
         JoinRandomRoom_UI_Panel.SetActive(panelToBeActivated.Equals(JoinRandomRoom_UI_Panel.name));
+        Settings_UI_Panel.SetActive(panelToBeActivated.Equals(Settings_UI_Panel.name));
     }
 
 
