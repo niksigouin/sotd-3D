@@ -9,7 +9,8 @@ using TMPro;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     [Header("Connection Status")]
-    public Text connectionStatusText;
+    public Text connectionStatusText_OLD;
+    public TextMeshProUGUI connectionStatusText;
 
     [Header("Login UI Panel")]
     public GameObject Login_UI_Panel;
@@ -62,7 +63,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        connectionStatusText.text = "Connection status: " + PhotonNetwork.NetworkClientState;
+        connectionStatusText.text = "" + PhotonNetwork.NetworkClientState;
     }
 
     #endregion
