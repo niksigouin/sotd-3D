@@ -53,6 +53,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         cachedRoomList = new Dictionary<string, RoomInfo>();
         roomListGameObjects = new Dictionary<string, GameObject>();
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     // Update is called once per frame
@@ -137,6 +139,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void OnStartGameButtonClicked()
     {
 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("GameScene");
+        }
+        
     }
 
     #endregion
