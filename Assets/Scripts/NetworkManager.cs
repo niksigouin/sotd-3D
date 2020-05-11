@@ -231,7 +231,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             if (player.IsMasterClient)
             {
                 playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(true);
-            } else
+            }
+            else
             {
                 playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(false);
             }
@@ -248,7 +249,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         playerListGameObject.transform.SetParent(playerListContent.transform);
         playerListGameObject.transform.localScale = Vector3.one;
 
-        playerListGameObject.transform.Find("PlayerNameText").GetComponent<Text>().text = newPlayer.NickName;
+        playerListGameObject.transform.Find("PlayerNameText").GetComponent<TextMeshProUGUI>().text = newPlayer.NickName;
 
         if (newPlayer.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
         {
@@ -259,6 +260,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
         }
 
+        if (newPlayer.IsMasterClient)
+        {
+            playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(true);
+        }
+        else
+        {
+            playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(false);
+        }
 
         playerListGameObjects.Add(newPlayer.ActorNumber, playerListGameObject);
     }
