@@ -24,8 +24,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Create Room UI Panel")]
     public GameObject CreateRoom_UI_Panel;
-    public InputField roomNameInputField; // Room name Input (Change to TMPro?)
-    public InputField roomMaxPlayersInputField;
+    //public InputField roomNameInputField_old; // Room name Input (Change to TMPro?)
+    //public InputField roomMaxPlayersInputField_old;
+    public TMP_InputField roomNameInputField; // Room name Input (Change to TMPro?)
+    public TMP_InputField roomMaxPlayersInputField;
+
 
     [Header("Inside Room UI Panel")]
     public GameObject InsideRoom_UI_Panel;
