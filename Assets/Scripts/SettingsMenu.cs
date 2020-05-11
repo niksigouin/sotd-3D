@@ -13,7 +13,6 @@ public class SettingsMenu : MonoBehaviour
     [Header("Graphics")]
     public TMP_Dropdown resolutionDropdown;
 
-
     Resolution[] resolutions;
 
     #region Unity Methods
