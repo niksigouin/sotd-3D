@@ -32,8 +32,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Inside Room UI Panel")]
     public GameObject InsideRoom_UI_Panel;
-    public Text roomNameText;
-    public Text roomPlayersText;
+    public TextMeshProUGUI roomNameText;
+    public TextMeshProUGUI roomPlayersText;
     public GameObject playerListPrefab;
     public GameObject playerListContent;
     public GameObject startGameButton;
@@ -217,7 +217,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             playerListGameObject.transform.SetParent(playerListContent.transform);
             playerListGameObject.transform.localScale = Vector3.one;
 
-            playerListGameObject.transform.Find("PlayerNameText").GetComponent<Text>().text = player.NickName;
+            playerListGameObject.transform.Find("PlayerNameText").GetComponent<TextMeshProUGUI>().text = player.NickName;
 
             if (player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
             {
@@ -228,6 +228,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
             }
 
+            if (player.IsMasterClient)
+            {
+                playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(true);
+            } else
+            {
+                playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(false);
+            }
 
             playerListGameObjects.Add(player.ActorNumber, playerListGameObject);
         }
@@ -384,8 +391,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void UpdateRoomInfo()
     {
-        roomNameText.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
-        roomPlayersText.text = "Players/Max.players: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
+        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+        roomPlayersText.text = PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
     }
     #endregion
 }
