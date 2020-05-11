@@ -98,8 +98,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (string.IsNullOrEmpty(roomName))
         {
             roomName = "Room " + Random.Range(100, 1000);
-
-
         }
 
         RoomOptions roomOptions = new RoomOptions();
@@ -334,8 +332,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             roomListEntryGameObject.transform.SetParent(roomListParentGameObject.transform);
             roomListEntryGameObject.transform.localScale = Vector3.one;
 
-            roomListEntryGameObject.transform.Find("RoomNameText").GetComponent<Text>().text = room.Name;
-            roomListEntryGameObject.transform.Find("RoomPlayersText").GetComponent<Text>().text = room.PlayerCount + " / " + room.MaxPlayers;
+            roomListEntryGameObject.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = room.Name;
+            roomListEntryGameObject.transform.Find("RoomPlayersText").GetComponent<TextMeshProUGUI>().text = room.PlayerCount + " / " + room.MaxPlayers;
             roomListEntryGameObject.transform.Find("JoinRoomButton").GetComponent<Button>().onClick.AddListener(() => OnJoinRoomButtonClicked(room.Name));
 
             roomListGameObjects.Add(room.Name, roomListEntryGameObject);
