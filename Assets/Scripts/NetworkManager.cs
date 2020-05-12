@@ -62,6 +62,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
 
         CheckPlayerName();
+
+
+        // CHECKS IF CONNECTED TO MASTER SERVER 
+        if (PhotonNetwork.IsConnectedAndReady)
+        {
+            ActivatePanel(GameOptions_UI_Panel.name);
+        }
+        else
+        {
+            ActivatePanel(Login_UI_Panel.name);
+        }
     }
 
     // Update is called once per frame

@@ -3486,10 +3486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec2a7176830c4f143878dcb43838a6c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MatchMakingScene: LobbyScene
-  Pause_UI_Panel: {fileID: 1636145674}
+  Main_UI_Panel: {fileID: 0}
   Settings_UI_Panel: {fileID: 880668048}
-  isPaused: 0
 --- !u!114 &724956422
 MonoBehaviour:
   m_ObjectHideFlags: 0

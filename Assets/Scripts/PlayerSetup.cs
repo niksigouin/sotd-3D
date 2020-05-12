@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
-using PlayerInputController;
+using Com.Signik.Player;
 
 public class PlayerSetup : MonoBehaviourPunCallbacks
 {

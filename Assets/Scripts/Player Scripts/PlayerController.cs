@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace PlayerInputController
+namespace Com.Signik.Player
 {
     [RequireComponent(typeof (Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]
@@ -71,6 +71,12 @@ namespace PlayerInputController
             public bool airControl; // TOGGLE CONTROLLING MID AIR
             public float shellOffset; //SET IT TO 0.1 OR MORE IF STUCK IN WALLS 
         }
+
+        [Serializable]
+        public class InputSettings
+        {
+            public KeyCode PauseKey = KeyCode.Escape; // SETS PAUSE KEY
+        }
         #endregion
 
         #region Variables
@@ -79,12 +85,13 @@ namespace PlayerInputController
         public MovementSettings movementSettings = new MovementSettings();
         public MouseLook mouseLook = new MouseLook();
         public AdvancedSettings advancedSettings = new AdvancedSettings();
+        public InputSettings inputSettings = new InputSettings();
 
         private Rigidbody m_RigidBody;
         private CapsuleCollider m_Capsule;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal;
-        private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
+        private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded, pause;
 
         public Vector3 Velocity
         {
@@ -106,6 +113,11 @@ namespace PlayerInputController
             get { return movementSettings.Running; }
         }
 
+        public bool Pause
+        {
+            get { return pause; }
+        }
+
         #endregion
 
         #region Unity Methods
@@ -121,6 +133,7 @@ namespace PlayerInputController
 
         private void Update()
         {
+            //if (PauseMenuController.paused) return;
             RotateView();
 
             // GETS JUMP INPUT ( CHANGE LAST OR PARAM IF YOU WANT DOUBLE JUMP)
@@ -128,11 +141,22 @@ namespace PlayerInputController
             {
                 m_Jump = true;
             }
+
+            // GETS PAUSE INPUT
+            pause = Input.GetKeyDown(inputSettings.PauseKey);
+
+            if (pause)
+            {
+                GameObject.Find("Pause").GetComponent<PauseMenuController>().TogglePause();
+            }
         }
 
         private void FixedUpdate()
         {
+            //if (PauseMenuController.paused) return;
             GroundCheck();
+
+
             Vector2 input = GetInput();
 
             // MOVES THE PLAYER IN DIRECTION IF THE INPUTS ARE GREATE THAN THE SMALLES POSITIVE SINGLE VALUE AND EITHER AIRCONTROL OR ISGROUNDED IF TRUE
@@ -207,18 +231,26 @@ namespace PlayerInputController
 
         private Vector2 GetInput()
         {
-            // GETS USER MOVEMENT INPUT AS A VECT 2
             Vector2 input = new Vector2
             {
                 x = Input.GetAxis("Horizontal"),
                 y = Input.GetAxis("Vertical")
             };
+
+            if (PauseMenuController.paused)
+            {
+                input = new Vector2 { x = 0f, y = 0f };
+            }
+
+            // GETS USER MOVEMENT INPUT AS A VECT 2
             movementSettings.UpdateDesiredTargetSpeed(input);
             return input;
         }
 
         private void RotateView()
         {
+            
+            if (PauseMenuController.paused) return;
             // CAPTURES ROTATION BEFORE CHANGE
             float oldYRotation = transform.eulerAngles.y;
 
@@ -255,6 +287,11 @@ namespace PlayerInputController
                 m_Jumping = false;
             }
         }
+
+        //private void PauseMouvement()
+        //{
+
+        //}
 
         #endregion
     }

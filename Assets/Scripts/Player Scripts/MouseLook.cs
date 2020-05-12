@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace PlayerInputController
+namespace Com.Signik.Player
 {
     [Serializable]
     public class MouseLook
@@ -16,6 +16,8 @@ namespace PlayerInputController
         public bool smooth;
         public float smoothTime = 5f;
         public bool lockCursor = true;
+
+        public bool playerIsPaused = false;
 
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
@@ -64,41 +66,74 @@ namespace PlayerInputController
             UpdateCursorLock();
         }
 
-        // TOGGLE CURSOR LOCK STATE
-        public void SetCursorLock(bool value)
-        {
-            lockCursor = value;
-            if (!lockCursor)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-        }
+        //TOGGLE CURSOR LOCK STATE
+        //public void SetCursorLock(bool value)
+        //{
+        //    lockCursor = value;
+        //    if (!lockCursor)
+        //    {
+        //        Cursor.lockState = CursorLockMode.None;
+        //        Cursor.visible = true;
+        //    }
+        //}
 
         // UPDATE THE CURSOR LOCKSTATE
         public void UpdateCursorLock()
         {
-            if (lockCursor)
-                InternalLockUpdate();
+            //if (m_cursorIsLocked)
+            //{
+            //    Cursor.lockState = CursorLockMode.Locked;
+            //    Cursor.visible = false;
+
+            //    if (Input.GetKeyDown(KeyCode.Escape))
+            //    {
+            //        m_cursorIsLocked = false;
+            //    }
+            //}
+            //else
+            //{
+            //    Cursor.lockState = CursorLockMode.None;
+            //    Cursor.visible = true;
+
+            //    if (Input.GetKeyDown(KeyCode.Escape))
+            //    {
+            //        m_cursorIsLocked = true;
+            //    }
+            //}
         }
 
         #endregion
 
         #region Private Methods
 
-        private void InternalLockUpdate()
-        {
-            if (m_cursorIsLocked)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-            else if (!m_cursorIsLocked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-        }
+        //private void InternalLockUpdate()
+        //{
+        //    //if (Input.GetKeyUp(KeyCode.Escape))
+        //    //{
+        //    //    if (playerIsPaused)
+        //    //    {
+        //    //        //Menu_Controller.GetComponent<MenuController>().isPaused = false;
+        //    //        //playerIsPaused = false;
+        //    //        m_cursorIsLocked = false;
+        //    //    } else if(!playerIsPaused)
+        //    //    {
+        //    //        //Menu_Controller.GetComponent<MenuController>().isPaused = true;
+        //    //        //playerIsPaused = true;
+        //    //        m_cursorIsLocked = true;
+        //    //    }
+        //    //}
+
+        //    if (m_cursorIsLocked)
+        //    {
+        //        Cursor.lockState = CursorLockMode.Locked;
+        //        Cursor.visible = false;
+        //    }
+        //    else if (!m_cursorIsLocked)
+        //    {
+        //        Cursor.lockState = CursorLockMode.None;
+        //        Cursor.visible = true;
+        //    }
+        //}
 
         Quaternion ClampRotationAroundXAxis(Quaternion q)
         {
