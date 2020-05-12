@@ -12,10 +12,14 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
     [SerializeField]
     TextMeshProUGUI playerNameText;
 
+    [Header("Debug")]
+    public bool LocalControl;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        if (photonView.IsMine )
+        if (photonView.IsMine || LocalControl)
         {
             transform.GetComponent<MouvementController>().enabled = true;
             playerCamera.GetComponent<Camera>().enabled = true;
