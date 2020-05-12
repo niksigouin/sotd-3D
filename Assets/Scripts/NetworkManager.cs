@@ -60,6 +60,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         roomListGameObjects = new Dictionary<string, GameObject>();
 
         PhotonNetwork.AutomaticallySyncScene = true;
+
+        CheckPlayerName();
     }
 
     // Update is called once per frame
@@ -75,10 +77,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void OnLoginButtonClicked()
     {
         string playerName = playerNameInput.text;
+        
         if (!string.IsNullOrEmpty(playerName))
         {
             PhotonNetwork.LocalPlayer.NickName = playerName;
             PhotonNetwork.ConnectUsingSettings();
+            SavePlayerName(playerName);
         }
         else
         {
@@ -162,6 +166,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void OnQuitButtonClicked()
     {
         Application.Quit();
+    }
+
+    public void OnDisconnectButtonClicked()
+    {
+        StartCoroutine(DisconnectPlayer());
     }
 
     #endregion
@@ -354,6 +363,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log(cause);
+    }
+
     #endregion
 
     #region Public Methods
@@ -366,6 +380,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomList_UI_Panel.SetActive(panelToBeActivated.Equals(RoomList_UI_Panel.name));
         JoinRandomRoom_UI_Panel.SetActive(panelToBeActivated.Equals(JoinRandomRoom_UI_Panel.name));
         Settings_UI_Panel.SetActive(panelToBeActivated.Equals(Settings_UI_Panel.name));
+    }
+
+    public void SavePlayerName(string nameInput)
+    {
+        //PhotonNetwork.LocalPlayer.NickName = nameInput;
+        PlayerPrefs.SetString("NickName", nameInput);
+    }
+
+    public void CheckPlayerName()
+    {
+        if (PlayerPrefs.HasKey("NickName") && PlayerPrefs.GetString("NickName") != "")
+        {
+            playerNameInput.text = PlayerPrefs.GetString("NickName");
+        }
     }
 
 
@@ -396,6 +424,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         roomNameText.text = PhotonNetwork.CurrentRoom.Name;
         roomPlayersText.text = PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+    }
+
+    IEnumerator DisconnectPlayer()
+    {
+        PhotonNetwork.Disconnect();
+        while (PhotonNetwork.IsConnected)
+            yield return null;
+
+        ActivatePanel(Login_UI_Panel.name);
     }
     #endregion
 }
