@@ -18,12 +18,12 @@ public class MouvementController : MonoBehaviour
     private float cameraRotation = 0f;
     private float currentCameraRotation = 0f;
 
-    private Rigidbody rb;
+    private Rigidbody playerBody;
 
     // Start is called before the first frame update
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        playerBody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -60,10 +60,10 @@ public class MouvementController : MonoBehaviour
     {
         if (velocity != Vector3.zero)
         {
-            rb.MovePosition(rb.position+velocity*Time.fixedDeltaTime);
+            playerBody.MovePosition(playerBody.position+velocity*Time.fixedDeltaTime);
         }
 
-        rb.MoveRotation(rb.rotation * Quaternion.Euler(rotation));
+        playerBody.MoveRotation(playerBody.rotation * Quaternion.Euler(rotation));
 
         if (playerCam != null)
         {

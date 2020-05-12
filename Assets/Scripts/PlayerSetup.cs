@@ -35,12 +35,17 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
 
     }
 
+    #region Private Methods
+
     void SetPlayerUI()
     {
-        if(playerNameText != null)
+        if (playerNameText != null)
         {
             playerNameText.text = photonView.Owner.NickName;
         }
-        
+
     }
+
+    #endregion
+
 }

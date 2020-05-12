@@ -677,10 +677,10 @@ PlayerSettings:
     m_VersionCode: 1
     m_VersionName: 
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: 8d1815b9-3e5d-4573-a676-ee1b5a5f9a23
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Survival of the Dumbest 3D
+  organizationId: niksigouin
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
