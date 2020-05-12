@@ -4,15 +4,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     [Header("Connection Status")]
-    public Text connectionStatusText;
+    public TextMeshProUGUI connectionStatusText;
 
     [Header("Login UI Panel")]
     public GameObject Login_UI_Panel;
-    public InputField playerNameInput; // Player name Input (Change to TMPro?)
+    public TMP_InputField playerNameInput;
     
 
     // PANELS
@@ -21,13 +22,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Create Room UI Panel")]
     public GameObject CreateRoom_UI_Panel;
-    public InputField roomNameInputField; // Room name Input (Change to TMPro?)
-    public InputField roomMaxPlayersInputField;
+    public TMP_InputField roomNameInputField;
+    public TMP_InputField roomMaxPlayersInputField;
+
 
     [Header("Inside Room UI Panel")]
     public GameObject InsideRoom_UI_Panel;
-    public Text roomNameText;
-    public Text roomPlayersText;
+    public TextMeshProUGUI roomNameText;
+    public TextMeshProUGUI roomPlayersText;
     public GameObject playerListPrefab;
     public GameObject playerListContent;
     public GameObject startGameButton;
@@ -39,6 +41,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     [Header("Join Random Room UI Panel")]
     public GameObject JoinRandomRoom_UI_Panel;
+
+    [Header("Settings UI Panel")]
+    public GameObject Settings_UI_Panel;
 
     private Dictionary<string, RoomInfo> cachedRoomList;
     private Dictionary<string, GameObject> roomListGameObjects;
@@ -55,12 +60,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         roomListGameObjects = new Dictionary<string, GameObject>();
 
         PhotonNetwork.AutomaticallySyncScene = true;
+
+        CheckPlayerName();
     }
 
     // Update is called once per frame
     void Update()
     {
-        connectionStatusText.text = "Connection status: " + PhotonNetwork.NetworkClientState;
+        connectionStatusText.text = "" + PhotonNetwork.NetworkClientState;
     }
 
     #endregion
@@ -70,10 +77,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public void OnLoginButtonClicked()
     {
         string playerName = playerNameInput.text;
+        
         if (!string.IsNullOrEmpty(playerName))
         {
             PhotonNetwork.LocalPlayer.NickName = playerName;
             PhotonNetwork.ConnectUsingSettings();
+            SavePlayerName(playerName);
         }
         else
         {
@@ -89,8 +98,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         if (string.IsNullOrEmpty(roomName))
         {
             roomName = "Room " + Random.Range(100, 1000);
-
-
         }
 
         RoomOptions roomOptions = new RoomOptions();
@@ -146,6 +153,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         
     }
 
+    public void OnSettingsButtonClicked()
+    {
+        ActivatePanel(Settings_UI_Panel.name);
+    }
+
+    public void OnSettingsBackButtonClicked()
+    {
+        ActivatePanel(Login_UI_Panel.name);
+    }
+
+    public void OnQuitButtonClicked()
+    {
+        Application.Quit();
+    }
+
+    public void OnDisconnectButtonClicked()
+    {
+        StartCoroutine(DisconnectPlayer());
+    }
+
     #endregion
 
     #region Photon Callbacks
@@ -193,7 +220,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             playerListGameObject.transform.SetParent(playerListContent.transform);
             playerListGameObject.transform.localScale = Vector3.one;
 
-            playerListGameObject.transform.Find("PlayerNameText").GetComponent<Text>().text = player.NickName;
+            playerListGameObject.transform.Find("PlayerNameText").GetComponent<TextMeshProUGUI>().text = player.NickName;
 
             if (player.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
             {
@@ -204,6 +231,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
             }
 
+            if (player.IsMasterClient)
+            {
+                playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(true);
+            }
+            else
+            {
+                playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(false);
+            }
 
             playerListGameObjects.Add(player.ActorNumber, playerListGameObject);
         }
@@ -217,7 +252,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         playerListGameObject.transform.SetParent(playerListContent.transform);
         playerListGameObject.transform.localScale = Vector3.one;
 
-        playerListGameObject.transform.Find("PlayerNameText").GetComponent<Text>().text = newPlayer.NickName;
+        playerListGameObject.transform.Find("PlayerNameText").GetComponent<TextMeshProUGUI>().text = newPlayer.NickName;
 
         if (newPlayer.ActorNumber == PhotonNetwork.LocalPlayer.ActorNumber)
         {
@@ -228,6 +263,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             playerListGameObject.transform.Find("PlayerIndicator").gameObject.SetActive(false);
         }
 
+        if (newPlayer.IsMasterClient)
+        {
+            playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(true);
+        }
+        else
+        {
+            playerListGameObject.transform.Find("HostIndicator").gameObject.SetActive(false);
+        }
 
         playerListGameObjects.Add(newPlayer.ActorNumber, playerListGameObject);
     }
@@ -244,7 +287,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             startGameButton.SetActive(true);
         }
     }
-
 
     public override void OnLeftRoom()
     {
@@ -295,8 +337,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             roomListEntryGameObject.transform.SetParent(roomListParentGameObject.transform);
             roomListEntryGameObject.transform.localScale = Vector3.one;
 
-            roomListEntryGameObject.transform.Find("RoomNameText").GetComponent<Text>().text = room.Name;
-            roomListEntryGameObject.transform.Find("RoomPlayersText").GetComponent<Text>().text = room.PlayerCount + " / " + room.MaxPlayers;
+            roomListEntryGameObject.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = room.Name;
+            roomListEntryGameObject.transform.Find("RoomPlayersText").GetComponent<TextMeshProUGUI>().text = room.PlayerCount + " / " + room.MaxPlayers;
             roomListEntryGameObject.transform.Find("JoinRoomButton").GetComponent<Button>().onClick.AddListener(() => OnJoinRoomButtonClicked(room.Name));
 
             roomListGameObjects.Add(room.Name, roomListEntryGameObject);
@@ -321,6 +363,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomName, roomOptions);
     }
 
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log(cause);
+    }
+
     #endregion
 
     #region Public Methods
@@ -332,6 +379,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         InsideRoom_UI_Panel.SetActive(panelToBeActivated.Equals(InsideRoom_UI_Panel.name));
         RoomList_UI_Panel.SetActive(panelToBeActivated.Equals(RoomList_UI_Panel.name));
         JoinRandomRoom_UI_Panel.SetActive(panelToBeActivated.Equals(JoinRandomRoom_UI_Panel.name));
+        Settings_UI_Panel.SetActive(panelToBeActivated.Equals(Settings_UI_Panel.name));
+    }
+
+    public void SavePlayerName(string nameInput)
+    {
+        //PhotonNetwork.LocalPlayer.NickName = nameInput;
+        PlayerPrefs.SetString("NickName", nameInput);
+    }
+
+    public void CheckPlayerName()
+    {
+        if (PlayerPrefs.HasKey("NickName") && PlayerPrefs.GetString("NickName") != "")
+        {
+            playerNameInput.text = PlayerPrefs.GetString("NickName");
+        }
     }
 
 
@@ -360,8 +422,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     void UpdateRoomInfo()
     {
-        roomNameText.text = "Room name: " + PhotonNetwork.CurrentRoom.Name;
-        roomPlayersText.text = "Players/Max.players: " + PhotonNetwork.CurrentRoom.PlayerCount + "/" + PhotonNetwork.CurrentRoom.MaxPlayers;
+        roomNameText.text = PhotonNetwork.CurrentRoom.Name;
+        roomPlayersText.text = PhotonNetwork.CurrentRoom.PlayerCount + " / " + PhotonNetwork.CurrentRoom.MaxPlayers;
+    }
+
+    IEnumerator DisconnectPlayer()
+    {
+        PhotonNetwork.Disconnect();
+        while (PhotonNetwork.IsConnected)
+            yield return null;
+
+        ActivatePanel(Login_UI_Panel.name);
     }
     #endregion
 }
