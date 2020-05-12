@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
-
+using Photon.Realtime;
 
 namespace Com.Signik.Player
 {
-    public class PauseMenuController : MonoBehaviour
+    public class PauseMenuController : MonoBehaviourPunCallbacks
     {
         [Header("Scenes")]
         public GameObject Main_UI_Panel;
@@ -22,6 +22,7 @@ namespace Com.Signik.Player
 
         private void Start()
         {
+            paused = false;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
@@ -33,7 +34,6 @@ namespace Com.Signik.Player
         public void OnResumeButtonClicked()
         {
             TogglePause();
-            //SetCursorLock(false);
         }
 
         public void OnLeaveButtonClicked()
@@ -76,43 +76,19 @@ namespace Com.Signik.Player
             Cursor.visible = paused;
         }
 
+        public override void OnLeftRoom()
+        {
+            SceneManager.LoadScene(0);
+        }
+
         #endregion
 
         #region Private Methods
 
         private void DisconnectPlayer()
         {
-
-            StartCoroutine(DisconnectAndLoad());
-        }
-
-        IEnumerator DisconnectAndLoad()
-        {
             PhotonNetwork.LeaveRoom();
-            while (PhotonNetwork.IsConnected)
-                yield return null;
-
-            SceneManager.LoadScene(0);
         }
-
-        private void SetCursorLock(bool state)
-        {
-            switch (state)
-            {
-                case true:
-                    Cursor.lockState = CursorLockMode.Confined;
-                    Cursor.visible = false;
-                    break;
-                case false:
-                    Cursor.lockState = CursorLockMode.None;
-                    Cursor.visible = true;
-                    break;
-                default:
-                    break;
-            }
-            
-        }
-
         #endregion
     }
 }
