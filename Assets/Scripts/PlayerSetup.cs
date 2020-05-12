@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using PlayerInputController;
 
 public class PlayerSetup : MonoBehaviourPunCallbacks
 {
@@ -21,13 +22,13 @@ public class PlayerSetup : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine || LocalControl)
         {
-            transform.GetComponent<MouvementController>().enabled = true;
+            transform.GetComponent<PlayerController>().enabled = true;
             playerCamera.GetComponent<Camera>().enabled = true;
 
         }
         else
         {
-            transform.GetComponent<MouvementController>().enabled = false;
+            transform.GetComponent<PlayerController>().enabled = false;
             playerCamera.GetComponent<Camera>().enabled = false;
         }
 

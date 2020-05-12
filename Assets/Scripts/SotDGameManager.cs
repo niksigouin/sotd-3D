@@ -15,8 +15,8 @@ public class SotDGameManager : MonoBehaviour
         {
             if (playerPrefab != null)
             {
-                int randomPoint = Random.Range(-10, 10);
-                PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(randomPoint, 5f, randomPoint), Quaternion.identity);
+                int randomPoint = Random.Range(-20, 20);
+                PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(randomPoint, 10f, randomPoint), Quaternion.identity);
             }
             else
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Photon.Pun;
+using PlayerInputController;
 
 public class MenuController : MonoBehaviour
 {
@@ -16,12 +17,17 @@ public class MenuController : MonoBehaviour
 
     private int activeScene;
 
+    private MouseLook mouseLook = new MouseLook();
+
+    #region Unity Methods
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         CheckIfPaused();
     }
 
+    #endregion
 
     #region Public Methods
 
@@ -33,6 +39,7 @@ public class MenuController : MonoBehaviour
     public void OnLeaveButtonClicked()
     {
         Debug.Log("LEAVE LOBBY");
+        DisconnectPlayer();
     }
 
     public void OnQuitButtonClicked()
@@ -69,13 +76,16 @@ public class MenuController : MonoBehaviour
             if (isPaused)
             {
                 ResumeGame();
-                Cursor.lockState = CursorLockMode.Locked;
+                mouseLook.SetCursorLock(true);
+                //PlayerInputState(true);
             }
             else
             {
                 isPaused = true;
-                Cursor.lockState = CursorLockMode.None; // UNLOCK CURSOR
+                //PlayerInputState(false);
+                mouseLook.SetCursorLock(false);
                 Pause_UI_Panel.SetActive(true);
+                
             }
         }
     }
@@ -83,11 +93,28 @@ public class MenuController : MonoBehaviour
     private void ResumeGame()
     {
         isPaused = false;
-        //SetPlayerMouvState(true);
-        Cursor.lockState = CursorLockMode.Locked;
+        //mouseLook.SetCursorLock(true);
         Pause_UI_Panel.SetActive(false);
     }
 
-    
+    private void DisconnectPlayer()
+    {
+        StartCoroutine(DisconnectAndLoad());
+    }
+
+    IEnumerator DisconnectAndLoad()
+    {
+        PhotonNetwork.Disconnect();
+        while (PhotonNetwork.IsConnected)
+            yield return null;
+
+        SceneManager.LoadScene(0);
+    }
+
+    private void PlayerInputState(bool state)
+    {
+        
+    }
+
     #endregion
 }
