@@ -11,13 +11,20 @@ public class SettingsMenu : MonoBehaviour
     public AudioMixer mainMixer;
 
     [Header("Graphics")]
+    public TMP_Dropdown graphicsDropdown;
     public TMP_Dropdown resolutionDropdown;
+
 
     Resolution[] resolutions;
 
     #region Unity Methods
 
-    private void Start()
+    //private void Awake()
+    //{
+        
+    //}
+
+    private void Awake()
     {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
@@ -65,6 +72,11 @@ public class SettingsMenu : MonoBehaviour
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+    public void OnApplyButtonPressed()
+    {
+        //SetFullscreen();
     }
     #endregion
 }
