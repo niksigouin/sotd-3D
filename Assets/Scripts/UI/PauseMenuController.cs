@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 using Photon.Realtime;
 
-namespace Com.Signik.Player
+namespace com.signik.sotd
 {
     public class PauseMenuController : MonoBehaviourPunCallbacks
     {
@@ -38,8 +38,12 @@ namespace Com.Signik.Player
 
         public void OnLeaveButtonClicked()
         {
-            Debug.Log("LEAVE LOBBY");
-            DisconnectPlayer();
+            PhotonNetwork.LeaveRoom();
+            //PhotonNetwork.LeaveLobby();
+            SceneManager.LoadScene(0);
+
+            ////Debug.Log("LEAVE LOBBY");
+            //DisconnectPlayer();
         }
 
         public void OnQuitButtonClicked()
@@ -75,19 +79,13 @@ namespace Com.Signik.Player
             Cursor.lockState = (paused) ? CursorLockMode.None : CursorLockMode.Locked;
             Cursor.visible = paused;
         }
-
-        public override void OnLeftRoom()
-        {
-            SceneManager.LoadScene(0);
-        }
-
         #endregion
 
         #region Private Methods
 
         private void DisconnectPlayer()
         {
-            PhotonNetwork.LeaveRoom();
+            Debug.Log("DISCONNECT PLAYER");
         }
         #endregion
     }

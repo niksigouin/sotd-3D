@@ -16,17 +16,18 @@ public class GameSetup : MonoBehaviour
         }
     }
 
-    public void DisconnectPlayer()
+    public void LeaveGame()
     {
-        StartCoroutine(DisconnectAndLoad());
+        StartCoroutine(LeaveAndLoad());
     }
 
-    IEnumerator DisconnectAndLoad()
+    IEnumerator LeaveAndLoad()
     {
+        //PhotonNetwork.LeaveRoom();
+        //while (PhotonNetwork.InRoom)
         PhotonNetwork.Disconnect();
         while (PhotonNetwork.IsConnected)
             yield return null;
-
         SceneManager.LoadScene(0);
     }
 }

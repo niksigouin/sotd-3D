@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class SotDGameManager : MonoBehaviour
 {
@@ -28,9 +29,18 @@ public class SotDGameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //public void OnLeaveButtonClicked()
+    //{
+    //    StartCoroutine(LeaveAndLoad());
+    //}
+    
+    //IEnumerator LeaveAndLoad()
+    //{
+    //    Debug.Log("ENUMERATOR CALLED");
+    //    PhotonNetwork.LeaveRoom();
+    //    while (PhotonNetwork.InRoom)
+    //        yield return null;
+    //    SceneManager.LoadScene(0);
+    //}
+
 }

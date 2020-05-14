@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Com.Signik.Player
+namespace com.signik.sotd
 {
     [RequireComponent(typeof (Rigidbody))]
     [RequireComponent(typeof(CapsuleCollider))]

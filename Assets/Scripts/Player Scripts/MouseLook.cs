@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Com.Signik.Player
+namespace com.signik.sotd
 {
     [Serializable]
     public class MouseLook
